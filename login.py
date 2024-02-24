@@ -19,7 +19,7 @@ config = {
     "CACHE_DEFAULT_TIMEOUT": 300
 }
 
-app = Flask(__name__, static_folder='static', static_url_path="https://github.com/alexanderkwesi/software-development-python/tree/main/static",  template_folder="templates/inventory-system/")
+app = Flask(__name__, static_folder='static', static_url_path="https://alexanderkwesi.github.io/software-development-python/static",  template_folder="templates/inventory-system/")
 app.secret_key = "Alexander Oluwaseun Kwesi Test Web Application"
 session = requests.Session()
 session = {"Owner":"PowerUser"}
@@ -153,8 +153,8 @@ def enter():
             flash("The user already exit in our db", 'error')
             return render_template('error_page.html', date=today)      
     elif request.method == 'GET':
-        session.get("http://127.0.0.1:5000")
-        requests.get("http://127.0.0.1:5000")
+        session.get("https://alexanderkwesi.github.io/software-development-python/")
+        requests.get("https://alexanderkwesi.github.io/software-development-python/")
         if session and requests.status_codes == 200:
                 flash('Request was successful.', 'success')
                 return render_template('enter.html', today=today)
@@ -214,8 +214,8 @@ def loginpage():
             flash("The requested resource could not be found.", 'error')
         return render_template('error_page.html', today=today)
     elif request.method == 'GET':
-        session.get("http://127.0.0.1:5000/loginpage")
-        requests.get("http://127.0.0.1:5000/loginpage")
+        session.get("https://alexanderkwesi.github.io/software-development-python/loginpage")
+        requests.get("https://alexanderkwesi.github.io/software-development-python/loginpage")
         if session and requests.status_codes == 200:
                 flash('Request was successful.', 'success')
                 return render_template('loginpage.html', today=today)
