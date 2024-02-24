@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/Users/alexanderkwesi/Desktop/"software development python"/static/1234.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css_style.css')}}" />
+
+    <title>Shelfie</title>
+</head>
+<body onload="if(window.refreshpage() == True)document.getElementById('flash').refresh();">
+
+<section id="flash_message">
+    <div id="flash" class="flash" onmouseover="setInterval(flash_pop,5000)">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+            <ul id="success-error" class="{{ category }}">
+              <li class="message-pop">{{ message }}</li>
+            </ul>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        </div>
+</section>    
+<section class="createuser">
+    <form enctype="multipart/form-data" action="\" method="post" id="enterform" name="enterform">
+        {% set label = "Create A User Account" %}
+        {% set labelusername = "Enter your email address as your username" %}
+        {% set labelpassword = " Enter your secure password " %}
+
+        {{ label | upper }}
+        <br/>
+        <br/>
+        {{ labelusername }}
+        <br/>
+        <br/>
+        <input type="email" id="username" name="username" class="txt_username"  value="" placeholder="Enter your email address - example@yahoo.com" max="50"  pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" autocomplete="email" required title="min length for email is 10  max length is 50 - example@yahoo.com or example.example@yahoo.co.uk"/>
+        <br/>
+        <br/>
+        {{ labelpassword }}
+        <br/>
+        <br/>
+        <input type="password" id="password" name="password" class="txt_password" placeholder="Enter your secure password" value="" max="20" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\|()<>~`{}])[A-Za-z\d@$!%*?&\|()<>~`{}]{8,}$" autocomplete="current-password" required title="min length for password is 8 max length is 20 - an upper case, lower case, number, and special character - example - Asek?788 "/><a id="showpassword" class="showpassword">show</a>
+        <br/>
+        <br/>
+        <input type="submit" id="btnuser" name="btnuser" class="btnuser" value="Create User Account"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url_for('loginpage') }}">Goto login page</a>
+    </form>
+</section>
+<section style="float:right;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size:larger;color:black;">{{ today }}</section>
+</body>
+</html>
+<script type="text/javascript">
+    function flash_pop()
+    {
+        const flsh = document.getElementById('flash');
+
+        flsh.style.display = 'none'; 
+    }
+document.getElementById('showpassword').addEventListener('click', function(){
+z = document.getElementById('password');
+v = document.getElementById('showpassword');
+
+if ( v.style.textDecoration == "line-through" ){
+                z.setAttribute("type", "password");
+                document.getElementById('showpassword').style.textDecoration = "none";}
+else{
+    z.setAttribute("type", "text");
+v = document.getElementById('showpassword').style.textDecoration = "line-through";
+}
+});
+
+$('showpassword').click(function() {
+    $('showpassword').show('password').removeClass('showpassword');
+    $('showpassword').show('password').addClass('strikeshowpassword');
+});
+</script>

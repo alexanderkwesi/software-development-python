@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/Users/alexanderkwesi/Desktop/software development python/static/1234.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css_style.css')}}" />
+
+    <title>Shelfie</title>
+    <style>
+        body{text-align:center;margin-top:10%;margin-left:20%;margin-right:20%;}h1{font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight:bolder;font-size:xx-large;margin-top:-40%;}p,a{font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size:larger;}h2{color:purple;font-size:200px;font-weight:bolder;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif}
+    </style>
+</head>
+<body>
+{% set error = 'Page Not Found' %}
+<h2>{{ 500 }}<h2>
+    <br/>
+<h1>Page Not Found</h1>
+<p>What you were looking for is just not there.
+<p><a href="{{ url_for('analytics_dashboard') }}">go somewhere nice</a>
+
+</body>
+</html>

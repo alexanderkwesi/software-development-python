@@ -1,0 +1,433 @@
+{# templates/uploaditem.html #}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Shelfie</title>
+
+    <meta http-equiv="refresh">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.nostyle.js">
+    </script>-->
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js">
+    </script>
+    <script type="text/javascript" src="/Users/alexanderkwesi/Desktop/software development python/static/1234.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css_style.css')}}" />
+
+    
+    <scrip type="text/python" src="{{ url_for('static', filename='main.py')}}" />
+    <scrip type="text/python" src="{{ url_for('static', filename='circle.py')}}" />
+    
+
+
+</head>
+<body>
+
+<section class="sidebar"><div class="logo"></div><section class="sidebarmenu"><div>Register New User</div><div>Analytics Chart</div><div>Subscriptions</div><div>Membership</div><div>Settings<span>Update Profile</span><span>Verify Profile</span></div><div>Log Out</div></section></section>
+<section class="head">
+    <section class="tabs">
+    <div id="u" class="u">Upload Item Image</div>  &nbsp; | &nbsp;
+    <!--<div id="v" class="v">View Item Details</div> &nbsp; | &nbsp;-->
+    <!--<div id="eid" class="e">Edit Item Details</div>  &nbsp; | &nbsp;-->
+    <div id="i" class="i">Edit/Insert Item Details</div> &nbsp; | &nbsp;
+    <div id="d" class="d">Delete Item Details</div> &nbsp; | &nbsp;
+    <div id="s" class="s">Sort Items  &nbsp; [ &nbsp; <span id="l" class="l"><a href="{{ url_for('ascending')}}">Ascending</a></span>&nbsp; | &nbsp; <span id="g" class="g"><a href="{{ url_for('descending') }}"> Descending </a></span> &nbsp; ] &nbsp; </div> &nbsp; | &nbsp;
+    <div id="se" class="se">Search Database of Items</div>
+    <div>&nbsp;<form enctype="multipart/form-data" method="post" action="\searchdb" class="searchform"><input type="textbox" id="searchItem" name="searchItem" placeholder="Enter Search Criteria"/>&nbsp;<input type="submit" id="btnsubmit" class="btnsubmits" value="&#10003;"/></form></div> &nbsp; | &nbsp;
+    <div id="analytics" class="analytics"><a href="{{ url_for('analytics_dashboard')}}">Analytics Chart</a></div>
+    </section>
+    <section id="selectdelete"  class="selectdelete">
+        <form enctype="multipart/form-data" method="post" action="\deleteitem" class="form_delete">
+            
+        <div class="inline">
+            
+            <div class="div_1" ><div class="space">Enter The ID's You Would Like Deleted, One | More ID's Accepted:</div></div>
+
+            <div class="text_1">&nbsp;&nbsp;&nbsp;<input type="number" id="item_number" name="item_number" class="item_number" value="" step="1" min="1"  />:Starting ID </div>
+
+            <div class="text_2"><input type="number" id="item_number_two" name="item_number_two" class="item_number_end" value=""  step="1" min="1" />:Ending ID</div>
+
+            <div class="text_3"><input type="submit" value="Delete" class="deletebtn"/></div>
+        </div>
+        </form>
+    </section>
+</section>
+
+
+<!--contenteditable="true"-->
+
+<div id="flash" class="flash" onmouseover="setInterval(flash_pop,5000)">
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+    <ul id="success-error" class="{{ category }}">
+      <li class="message-pop">{{ message }}</li>
+    </ul>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</div>
+
+     
+
+
+
+
+
+
+
+<section id="middle" class="middle">
+
+   
+
+
+
+    
+   
+                        {% if itemcollection %}
+                    {#% set data = imp0rt('items') %#}  
+                    {% set items = itemcollection %}
+                   <!-- <div id="items" class="items">{{items}}</div> -->
+                {% for key, image, detail, barcode, cost  in itemcollection  %}
+                {% set item_id = key %}   
+            {% set  item_image = image %}
+        {% set item_detail = detail %} 
+    {% set item_cost = cost %}
+   
+    
+        <div id="selected_item_id">&nbsp;{{ item_id  }}&nbsp;</div>  
+        <img src="/Users/alexanderkwesi/Desktop/software%20development%20python/static/images/{{ item_image | trim('[]') | replace('"', '') | replace("'",'') | string}}"  style="height:200px;width:200px;"/>
+
+        <div id="details" class="details" onclick="hide_view_details(this)">
+            <div class="labelviewdetails">View Details</div>
+            <br/>
+            {{ image }} | {{ detail }} | {{ cost }}
+            <br/>
+            <div class="hideviewdetials" >Hide</div>
+        </div>
+
+         
+
+        <div id="test"></div>  
+        <div id="append"></div> 
+        
+        
+        <div>
+            <div id="form-list" oncontextmenu="hide_form(this)" >
+        <form enctype="multipart/form-data" method="POST" action="\insertitemdetail" id="form_insert{{item_id}}" class="form">
+            <input type="number" id="selected_item_id" name="selected_item_id" value='{{ item_id }}' hidden /> 
+            {% set labelimage = " Enter your image title " %}
+            {% set label = " Enter your item detail in the field provided " %}
+            {% set cost = " Enter Item Cost " %}
+            <div class="label">{{ labelimage }}</div>
+            <div><input type="text" id="itemimage" name="itemimage" width="200px" height="100px" placeholder=" Enter the image " class="number" value="{{ item_image }}"/></div>
+            <div class="label">{{ label }}</div>
+            <div><textarea type="textarea" id="itemdetail" name="itemdetail" placeholder=" Enter your item detail in the field provided " rows="5" cols="50" class="textarea" >{{ item_detail }}</textarea></div>
+            <div class="label">{{ cost }}</div>
+            <div><input type="number" id="itemcost" name="itemcost" width="200px" height="70px" placeholder=" Enter the cost " class="number" value="{{ item_cost }}"/></div>
+            <div><input type="submit" id="submitdata" name="submitdata" value="Submit" class="submit" /></div>
+        </form>
+        <div id="hide_form" class="hide_form" oncontextmenu="hide_text_hide(this)" onclick="showpopupwthdelay()" >Hide - X</div>
+            </div>
+        <div id="show_form" class="show_form" onclick="show_text_hide(this)" >Show - X</div>
+
+
+        </div>
+       
+
+        
+    {% endfor %}
+    
+    {% endif %}         
+    
+    
+
+
+   
+
+
+
+ 
+</section>
+
+
+
+
+<section class="footer"><section class="split"><div>&#169; &nbsp; Copyright - Designed by Kwesi Alexander Oluwaseun</div><div>&#174; Registered - {{ today }}</div></section></section>
+
+
+
+<section id="success-message" class="success-message">
+    <ul class="ul">
+        <li id="message" class="message">Infomation_Message Right Click on the Hide X to hide and Show X to Show</li>
+    </ul>
+</section>
+
+<section id="pop-up-upload-item-image" class="pop-up-upload-item-image">
+    <form enctype="multipart/form-data" method="POST" action="\uploaditem" >
+        <div id="pop-up" class="pop-up">Choose the path of the file you want to upload - </div>
+        <div class="first_">
+            <input class="file" type="file" name="filetoupload" placeholder="Select fiile you want to upload" accept=".jpeg, .jpg, .png"/>
+            <input class="upload" type="submit" id="uploadbtnclick" value="Upload file"/>
+        </div>
+    </form>
+    <div id="hide" class="hide" >Hide</div>
+</section>
+
+
+
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+    window.addEventListener('mouseover', () => {
+       
+        hide_middle();
+    });
+    function hide_middle()
+    {
+        f = document.getElementById("dashboard");
+        if (f.style.display == "block")
+        {
+            f = document.getElementById("middle").style.display = "none";
+            
+            f.style.border = "none";
+            f.classList.remove("middle");
+        }
+        else
+        {
+            f = document.getElementById("middle").style.display = "grid";
+            f.style.border = "3px dotted purple";
+      
+            f.classList.add("middle");
+
+
+        }
+    }
+    
+    function hide_view_details(a)
+    {
+        a.style.display = "none";
+
+    }
+    function show_text_hide(a)
+    {
+        a.style.display = "block";
+        //element.classlist.add('hide-form');
+        location.reload();
+    }
+    function hide_form(a)
+    {
+        a.style.display = "none";
+        
+    }
+    function hide_text_hide(a)
+    {
+        //alert('test');
+        a.style.display = "none";
+        document.getElementById('show_form').style.display = "block";
+
+    } 
+    function flash_pop()
+    {
+        const flsh = document.getElementById('flash');
+
+        flsh.style.display = 'none'; 
+    }
+
+
+    document.getElementById('d').addEventListener("click", () => {
+
+        w = document.getElementById('selectdelete');
+        if (w.style.display == 'none')
+        {
+            w.style.visibility = 'visible';
+            w.style.display = 'block';
+
+
+        }
+        else
+        {
+            w.style.visibility = 'hidden';
+            w.style.display = 'none';
+    
+
+        }
+});
+    document.getElementById('u').addEventListener("click", () => {
+
+        w = document.getElementById('pop-up-upload-item-image');
+        if (w.style.display == 'none')
+        {
+            w.style.visibility = 'visible';
+            w.style.display = 'block';
+            w.style.animationPlayState = 'running';
+            w.style.animation = "infinite";
+            w.style.animationName = "pop-up-upload-item-image";
+            w.style.animationDuration = "10s";
+
+
+        }
+        else
+        {
+            w.style.visibility = 'visible';
+            w.style.display = 'block';
+            w.style.animationPlayState = 'running';
+            w.style.animation = "infinite";
+            w.style.animationName = "pop-up-upload-item-image";
+            w.style.animationDuration = "10s";
+
+        }
+});
+document.getElementById('hide').addEventListener("click", () => {
+        e = document.getElementById('pop-up-upload-item-image');
+        if (e.style.display == 'block')
+        {
+            e.style.visibility = 'hidden';
+            e.style.display = 'none';
+            e.style.animationPlayState = 'running';
+            e.style.animation = "infinite";
+            e.style.animationName = "pop-up-upload-item-image";
+            e.style.animationDuration = "10s";
+
+        }
+
+});
+
+//document.getElementById('analytics').addEventListener("click", () => {
+  //  e = document.getElementById('middle');
+    //s = document.getElementById("dashboard")
+   // if (e.style.display == 'block')
+    //{
+     //   e.style.visibility = 'hidden';
+      //  e.style.display = 'none';
+       // s.style.display = "block";
+    //}
+    //else
+    //{
+     //   e.style.visibility = 'visible';
+      //  e.style.display = 'none';
+       // s.style.display = "block";
+    //}
+
+//});
+
+document.getElementById('i').addEventListener("click", () => {
+
+        location.reload();
+
+        const itemlist =  document.getElementById('items').innerHTML;
+        alert(itemlist);
+        //for (const [key, item_id, item_image, item_detail, item_barcode, item_cost] of Object.entries(itemlist));
+        //document.getElementById('test').innerHTML = "TEST";
+                
+        document.querySelector('#form_insert').style.display = "block";
+
+        const container = userList.querySelectorAll('section.middle > div');
+
+            itemlist.forEach ((userItem) => {
+
+                let form_box = document.getElementById('append');
+
+                let form_create = document.createElement('div');
+
+                form_box.append(form_create).append(form_box);
+
+            });
+            
+});
+const titles = document.getElementById('message');
+window.addEventListener('load', () => {
+        if (window.location.href.endsWith=="uploaditem")
+        {
+            
+                document.getElementById('success-message').style.display = "block";
+
+                setInterval(hidedisplay, 5000);
+
+        }
+        
+});
+function showpopupwthdelay()
+{
+        
+            document.getElementById('success-message').style.visibility = "visible";
+            document.getElementById('success-error').style.display = "none";
+
+}
+function hidedisplay()
+{
+        document.getElementById('success-message').style = 'none';
+}
+</script>
+<script>
+    $("#searchItem").on('keyup', function (event) {
+        if (event.keyCode === 13) {
+
+        let a = document.getElementById("searchItem").value;
+        window.find(a);
+        a.value = "";
+    }
+    });
+    
+</script>
+<script>
+    function change_val()
+    {
+        let lists  = document.getElementById('selectboxoption').selected.value;
+        alert(lists);
+
+    }
+document.getElementById('item_iq').addEventListener("change", function() {
+    let lists  = this.value;
+    const c = document.getElementById('hiddenbox').value;
+    let d = c.substring(1, 2);
+    var test = document.getElementById('hiddenbox_2').value = this.value = d;
+    alert(d);
+    
+
+    //alert(c);
+        
+            documnet.getElementById('item_id').value = d//c.replace(")", "").replace(",","").replace("(","").substring(1, 2);
+            document.getElementById('imagetxt').value = c.replace(')', '').replace(',','').replace("(",'').substring(3,18);
+            document.getElementById('detailtxt').value =  c.replace(')', '').replace(',','').replace("(",'').substring(13, 24);
+            document.getElementById('costtxt').value =  c.replace(')', '').replace(',','').replace("(",'').slice(-4,-1);
+});
+</script>
+<script type="text/javascript">
+    $(window).scroll(function(event) {
+        function footer()
+        {
+            var scroll = $(window).scrollTop(); 
+            if(scroll==0)
+            { 
+                $(".footer").fadeIn("slow").addClass("show");
+            }
+            else
+            {
+                $(".footer").fadeOut("slow").removeClass("show");
+            }
+    
+            clearTimeout($.data(this, 'scrollTimer'));
+            $.data(this, 'scrollTimer', setTimeout(function() {
+                if ($('.footer').is(':hover')) {
+                    footer();
+                }
+                else
+                {
+                    $(".footer").fadeOut("slow");
+                }
+            }, 2000));
+        }
+        footer();
+    });
+</script>
+
+

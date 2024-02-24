@@ -1,0 +1,37 @@
+{
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "alexanderkwesi",
+            "database": "${workspaceFolder:software development python}/SHELFIE.db"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "qq",
+            "database": "SHELFIE",
+            "username": "AlexKwesi"
+        }
+    ],
+    "python.REPL.enableREPLSmartSend": false,
+    "terminal.integrated.macOptionIsMeta": true,
+    "terminal.integrated.macOptionClickForcesSelection": true,
+    "terminal.explorerKind": "external",
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./static",
+        "-p",
+        "*test.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true
+}
