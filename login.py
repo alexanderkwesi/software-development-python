@@ -19,7 +19,7 @@ config = {
     "CACHE_DEFAULT_TIMEOUT": 300
 }
 
-app = Flask(__name__, static_folder='static', static_url_path="https://alexanderkwesi.github.io/software-development-python/static",  template_folder="templates/inventory-system/")
+app = Flask(__name__, static_folder='static', static_url_path="https://github.com/alexanderkwesi/software-development-python/tree/main/static",  template_folder="templates/inventory-system/")
 app.secret_key = "Alexander Oluwaseun Kwesi Test Web Application"
 session = requests.Session()
 session = {"Owner":"PowerUser"}
